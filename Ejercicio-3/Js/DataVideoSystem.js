@@ -169,10 +169,23 @@ function initPopulate(){
 	//Asociamos los actores y las producciones
 	try {
 		video.assignActor(persona9,serie2);
-		video.assignActor(persona9,movie2);
 		video.assignActor(persona10,serie2);
 		video.assignActor(persona11,serie3);
 		video.assignActor(persona12,serie3);
+	} catch (error) {
+		console.log("" + error);
+	}
+
+	//Asociamos los directores y las producciones
+	try {
+		video.assignDirector(persona1,movie1);
+		video.assignDirector(persona2,movie2);
+		video.assignDirector(persona3,movie3);
+		video.assignDirector(persona4,movie4);
+		video.assignDirector(persona5,movie5);
+		video.assignDirector(persona6,movie6);
+		video.assignDirector(persona7,movie7);
+		video.assignDirector(persona8,serie1);
 	} catch (error) {
 		console.log("" + error);
 	}
@@ -575,7 +588,7 @@ function showActorAlone(){
 			button.appendChild(textB);
 
 			var title4 = document.createElement("h6");
-			var text4 = document.createTextNode("Producciones:");
+			var text4 = document.createTextNode("Filmografia:");
 			title4.appendChild(text4);
 				
 			contentP.appendChild(content);
@@ -697,6 +710,10 @@ function showDirectorAlone(){
 			button.setAttribute("value",director.value.name);
 			var textB = document.createTextNode("Atras");
 			button.appendChild(textB);
+
+			var title4 = document.createElement("h6");
+			var text4 = document.createTextNode("Filmografia:");
+			title4.appendChild(text4);
 				
 			contentP.appendChild(content);
 			contentP.appendChild(info);
@@ -708,7 +725,42 @@ function showDirectorAlone(){
 			info.appendChild(title3);
 			info.appendChild(date);
 			info.appendChild(button);
+			info.appendChild(title4);
 
+			var prod =document.createElement("div");
+			prod.setAttribute("class","d-flex");
+			info.appendChild(prod);
+
+			var productions = video.getProductionsDirector(director.value);
+			var production = productions.next();
+			while (production.done !== true){
+				
+				var divI = document.createElement("div");
+				divI.setAttribute("class", "mr-2 text-center");
+
+				var image2 = document.createElement("img");
+				image2.setAttribute("src","img/"+production.value.title+".jpg");
+				image2.setAttribute("alt",production.value.title);
+				image2.setAttribute("style", "height: 80px");
+				image2.setAttribute("class","d-block mb-1");
+
+				var b1 = document.createElement ("button");
+				b1.setAttribute("class","btn btn-default btn-sm mb-1");
+				b1.setAttribute("id","buttonP");
+				b1.setAttribute("type","button");
+				b1.setAttribute("value",production.value.title);
+				var textBt = document.createTextNode(production.value.title);
+				b1.appendChild(textBt);
+
+				b1.addEventListener("click",showProductionAlone);
+
+				prod.appendChild(divI);
+				divI.appendChild(image2);
+				divI.appendChild(b1);
+				production = productions.next();
+			}
+
+			info.appendChild(button);
 			button.addEventListener("click",ShowDirectors);
 
 			search = true;
@@ -787,7 +839,7 @@ function showProductionAlone(){
 
 			var title5 = document.createElement("h6");
 			title5.setAttribute("class", "mt-2")
-			var text5 = document.createTextNode("Actores:");
+			var text5 = document.createTextNode("Director:");
 			title5.appendChild(text5);
 
 			contentP.appendChild(content);
@@ -803,6 +855,104 @@ function showProductionAlone(){
 			info.appendChild(synopsis);
 			info.appendChild(title5);
 
+			var prod =document.createElement("div");
+			prod.setAttribute("class","d-flex");
+			info.appendChild(prod);
+
+			var directors = video.directors;
+			var director = directors.next();
+			
+			while (director.done !== true){
+
+				var productions = video.getProductionsDirector(director.value);
+				var production = productions.next();
+				while (production.done !== true){
+					
+					if(production.value.title == this.value){
+
+						var divI = document.createElement("div");
+						divI.setAttribute("class", "mr-2 text-center");
+
+						var image2 = document.createElement("img");
+						image2.setAttribute("src",director.value.picture);
+						image2.setAttribute("alt",director.value.name);
+						image2.setAttribute("style", "height: 80px");
+						image2.setAttribute("class","d-block mb-1");
+
+						var b1 = document.createElement ("button");
+						b1.setAttribute("class","btn btn-default btn-sm mb-1");
+						b1.setAttribute("id","buttonP");
+						b1.setAttribute("type","button");
+						b1.setAttribute("value",director.value.name);
+						var textBt = document.createTextNode(director.value.name+" "+director.value.lastName1);
+						b1.appendChild(textBt);
+
+						b1.addEventListener("click",showDirectorAlone);
+
+						prod.appendChild(divI);
+						divI.appendChild(image2);
+						divI.appendChild(b1);
+	
+					}
+
+					production = productions.next();
+				}
+				
+				director = directors.next();
+			}
+
+			var title6 = document.createElement("h6");
+			title6.setAttribute("class", "mt-2")
+			var text6 = document.createTextNode("Reparto:");
+			title6.appendChild(text6);
+
+			info.appendChild(title6);
+
+			var prod2 =document.createElement("div");
+			prod2.setAttribute("class","d-flex");
+			info.appendChild(prod2);
+
+			var actors = video.actors;
+			var actor = actors.next();
+			
+			while (actor.done !== true) {
+				
+				var productions = video.getProductionsActor(actor.value);
+				var production = productions.next();
+				while (production.done !== true) {
+					
+					if(production.value.title == this.value){
+
+						var divI = document.createElement("div");
+						divI.setAttribute("class", "mr-2 text-center");
+
+						var image2 = document.createElement("img");
+						image2.setAttribute("src",actor.value.picture);
+						image2.setAttribute("alt",actor.value.name);
+						image2.setAttribute("style", "height: 80px");
+						image2.setAttribute("class","d-block mb-1");
+
+						var b1 = document.createElement ("button");
+						b1.setAttribute("class","btn btn-default btn-sm mb-1");
+						b1.setAttribute("id","buttonP");
+						b1.setAttribute("type","button");
+						b1.setAttribute("value",actor.value.name);
+						var textBt = document.createTextNode(actor.value.name+" "+actor.value.lastName1);
+						b1.appendChild(textBt);
+
+						b1.addEventListener("click",showActorAlone);
+
+						prod2.appendChild(divI);
+						divI.appendChild(image2);
+						divI.appendChild(b1);
+	
+					}
+
+					production = productions.next();
+				}
+				
+				actor = actors.next();
+			}
 
 			search = true;
 

@@ -7,3 +7,6 @@ Version 2.0
 
 Version 3.0
 #Casi Version final.
+
+Version 4.0
+#TERMINADO *Posibles mejoras*
