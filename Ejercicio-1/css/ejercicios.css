@@ -1,0 +1,17 @@
+header {
+	clear: both;
+}
+
+#buttons > div {
+	display: inline-block;
+}
+
+header nav ul li a.standard {
+	border-top-color: red;
+}
+
+header nav ul li a.standard:hover {
+	border-top-color: #ffffff;
+	background-color: red;
+	text-decoration: none;
+}
